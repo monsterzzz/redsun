@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.monster.redsun.mapper.GasMapper">
+
+    <insert id="insertOne"
+            parameterType="com.monster.redsun.entity.Gas"
+            useGeneratedKeys="true"
+            keyProperty="id"
+    >
+        insert into gas(year, month, seal) values (#{year}, #{month}, #{seal});
+    </insert>
+
+    <update id="updateGas" parameterType="com.monster.redsun.entity.Gas">
+        update gas set year = #{year},month = #{month},seal=#{seal} where id = #{id}
+    </update>
+
+    <delete id="deleteOneById" parameterType="long">
+        delete from gas where id = #{id}
+    </delete>
+
+    <select id="selectAll" resultType="com.monster.redsun.entity.Gas">
+        select * from gas;
+    </select>
+
+    <select id="selectPageVo" resultType="com.monster.redsun.entity.Gas">
+        select * from gas
+    </select>
+    <select id="isExistsById" resultType="java.lang.Integer" parameterType="long">
+        select count(*) from gas where id = #{id}
+    </select>
+
+
+</mapper>
