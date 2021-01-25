@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.monster.redsun.mapper.GasExchangeMapper">
+
+    <insert id="inRepo"
+            parameterType="long"
+            useGeneratedKeys="true"
+            keyProperty="id"
+    >
+        insert into gas_exchange(in_time,input_id) values (#{in_time},#{id});
+    </insert>
+
+    <update id="outRepo" parameterType="com.monster.redsun.entity.GasExchange">
+        update gas_exchange
+        set ex_time = #{ex_time},output_id = #{output_id},
+            guest_id = #{guest_id},money = #{money},remark = #{remark}
+        where id = #{id}
+    </update>
+
+    <update id="updateExchange">
+        update gas_exchange
+        set ex_time = #{ex_time},output_id = #{output_id},input_id = #{input_id},
+            guest_id = #{guest_id},money = #{money},remark = #{remark}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOneById">
+        delete from gas_exchange where id = #{id};
+    </delete>
+
+    <select id="selectAll" resultType="com.monster.redsun.entity.GasExchange">
+        select * from gas_exchange;
+    </select>
+
+    <select id="selectPageVo" resultType="com.monster.redsun.entity.GasExchange">
+        select * from gas_exchange
+    </select>
+
+
+
+
+</mapper>
