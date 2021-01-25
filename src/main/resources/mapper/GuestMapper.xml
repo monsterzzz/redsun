@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.monster.redsun.mapper.GuestMapper">
+
+    <insert id="insertOne"
+            parameterType="com.monster.redsun.entity.Guest"
+            useGeneratedKeys="true"
+            keyProperty="id"
+    >
+        insert into guest(name, address, phone) values (#{name}, #{address}, #{phone});
+    </insert>
+
+    <update id="updateGas" parameterType="com.monster.redsun.entity.Guest">
+        update guest set name = #{name},address = #{address},phone=#{phone} where id = #{id}
+    </update>
+
+    <delete id="deleteOneById" parameterType="long">
+        delete from guest where id = #{id}
+    </delete>
+
+    <select id="selectAll" resultType="com.monster.redsun.entity.Guest">
+        select * from guest;
+    </select>
+
+    <select id="selectPageVo" resultType="com.monster.redsun.entity.Guest">
+        select * from guest
+    </select>
+
+    <select id="isExistsById" resultType="java.lang.Integer" parameterType="long">
+        select count(*) from guest where id = #{id}
+    </select>
+
+    <select id="isExistsByPhone" resultType="java.lang.Integer" parameterType="string">
+        select COUNT(*) from guest where phone = #{phone}
+    </select>
+
+
+</mapper>
