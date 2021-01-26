@@ -3,17 +3,16 @@
 <mapper namespace="com.monster.redsun.mapper.GasExchangeMapper">
 
     <insert id="inRepo"
-            parameterType="long"
             useGeneratedKeys="true"
-            keyProperty="id"
+            keyColumn="id"
     >
-        insert into gas_exchange(in_time,input_id) values (#{in_time},#{id});
+        insert into gas_exchange(in_time,input_id) values (#{inTime},#{id});
     </insert>
 
     <update id="outRepo" parameterType="com.monster.redsun.entity.GasExchange">
         update gas_exchange
-        set ex_time = #{ex_time},output_id = #{output_id},
-            guest_id = #{guest_id},money = #{money},remark = #{remark}
+        set ex_time = #{exTime},output_id = #{outputId},
+            guest_id = #{guestId},money = #{money},remark = #{remark}
         where id = #{id}
     </update>
 
@@ -36,7 +35,9 @@
         select * from gas_exchange
     </select>
 
-
+    <select id="isExistInRepo" resultType="java.lang.Integer">
+        select count(*) from gas_exchange where input_id = #{id} and output_id IS NULL;
+    </select>
 
 
 </mapper>

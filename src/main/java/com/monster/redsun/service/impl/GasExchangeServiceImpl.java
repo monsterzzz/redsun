@@ -29,12 +29,17 @@ public class GasExchangeServiceImpl implements GasExchangeService {
         HashMap<String, ArrayList<Long>> map = new HashMap();
         ArrayList<Long> passList = new ArrayList();
         ArrayList<Long> errorList = new ArrayList();
+        ArrayList<Long> existList = new ArrayList();
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (Long id : ids) {
             try {
-                gasExchangeMapper.inRepo(formatter.format(date), id);
-                passList.add(id);
+                if(gasExchangeMapper.isExistInRepo(id) >= 1){
+                    existList.add(id);
+                }else{
+                    gasExchangeMapper.inRepo(formatter.format(date), id);
+                    passList.add(id);
+                }
             } catch (Exception e) {
                 System.out.println(e);
                 errorList.add(id);
@@ -42,6 +47,7 @@ public class GasExchangeServiceImpl implements GasExchangeService {
         }
         map.put("pass",passList);
         map.put("error",errorList);
+        map.put("exist",existList);
         return map;
     }
 
@@ -50,7 +56,8 @@ public class GasExchangeServiceImpl implements GasExchangeService {
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         gasExchange.setExTime(formatter.format(date));
-        Long flag = gasExchangeMapper.outRepo(gasExchange);
+        Long flag;
+        flag = gasExchangeMapper.outRepo(gasExchange);
         return flag >= 1;
     }
 

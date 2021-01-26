@@ -21,6 +21,7 @@ public class GasExchangeController {
     @ResponseBody
     public BaseResponse inRepo(@RequestBody GasExchangeInDTO exchangeInDTO){
         BaseResponse response = new BaseResponse();
+        System.out.println(exchangeInDTO);
         HashMap<String, ArrayList<Long>> map = exchangeService.inRepo(exchangeInDTO.getIds());
         response.setData(map);
         return response;
@@ -30,6 +31,7 @@ public class GasExchangeController {
     @ResponseBody
     public BaseResponse outRepo(@RequestBody GasExchange gasExchange){
         BaseResponse response = new BaseResponse();
+        System.out.println(gasExchange);
         if(exchangeService.outRepo(gasExchange)){
             response.setData("出库成功!");
         }else {

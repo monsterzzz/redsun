@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @Mapper
 public interface GasExchangeMapper {
 
-    Long inRepo(String in_time,Long id);
+    Long inRepo(String inTime,Long id);
 
     Long outRepo(GasExchange gasExchange);
 
@@ -23,6 +23,8 @@ public interface GasExchangeMapper {
     IPage<GasExchange> selectPageVo(Page<?> page);
 
     Integer updateExchange(GasExchange gasExchange);
+
+    Integer isExistInRepo(Long id);
 
 
 }
