@@ -2,14 +2,17 @@ package com.monster.redsun.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.monster.redsun.entity.Gas;
 import com.monster.redsun.mapper.GasMapper;
 import com.monster.redsun.service.GasService;
+import com.monster.redsun.vo.GasQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class GasServiceImpl implements GasService {
@@ -19,8 +22,9 @@ public class GasServiceImpl implements GasService {
 
 
     @Override
-    public Long insertOne(Gas gas) {
-        return gasMapper.insertOne(gas);
+    public ArrayList<Gas> insertBatch(ArrayList<Gas> gasList) {
+        gasMapper.insertBatch(gasList);
+        return gasList;
     }
 
     @Override
@@ -39,7 +43,18 @@ public class GasServiceImpl implements GasService {
 
     @Override
     public IPage<Gas> selectPageVo(Page<?> page) {
+
         return gasMapper.selectPageVo(page);
+    }
+
+    @Override
+    public ArrayList<Gas> selectAllNullGas() {
+        ArrayList<Gas> gases = gasMapper.selectAllNullGas();
+        for(Gas gas :gases ){
+            gas.gasIdGenerater();
+
+        }
+        return gases;
     }
 
     @Override

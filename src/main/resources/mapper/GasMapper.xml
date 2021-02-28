@@ -2,13 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.monster.redsun.mapper.GasMapper">
 
-    <insert id="insertOne"
-            parameterType="com.monster.redsun.entity.Gas"
+     <insert id="insertBatch"
+            parameterType="arraylist"
             useGeneratedKeys="true"
             keyProperty="id"
     >
-        insert into gas(year, month, seal) values (#{year}, #{month}, #{seal});
+        insert into
+            gas(year, month, is_null,status,create_time,modify_time)
+        values
+            <foreach collection="list" index="index" item="gas" separator=",">
+                (#{gas.year}, #{gas.month}, #{gas.isNull},#{gas.status}, #{gas.createTime}, #{gas.modifyTime})
+            </foreach>
     </insert>
+
 
     <update id="updateGas" parameterType="com.monster.redsun.entity.Gas">
         update gas set year = #{year},month = #{month},seal=#{seal} where id = #{id}
@@ -19,7 +25,7 @@
     </delete>
 
     <select id="selectAll" resultType="com.monster.redsun.entity.Gas">
-        select * from gas;
+        select * from gas
     </select>
 
     <select id="selectPageVo" resultType="com.monster.redsun.entity.Gas">
@@ -27,6 +33,18 @@
     </select>
     <select id="isExistsById" resultType="java.lang.Integer" parameterType="long">
         select count(*) from gas where id = #{id}
+    </select>
+
+    <select id="selectAllNullGas" resultType="com.monster.redsun.entity.Gas">
+        select * from gas where is_null = 1
+    </select>
+
+    <select id="selectAllCount" resultType="java.lang.Integer">
+        select count(*) from gas
+    </select>
+
+    <select id="selectWillCount" resultType="java.lang.Integer" parameterType="com.monster.redsun.entity.Gas">
+        select count(*) from gas where year <![CDATA[<]]> #{year} and month <![CDATA[<=]]> #{month} ;
     </select>
 
 

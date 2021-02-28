@@ -10,7 +10,10 @@ create table gas(
     id int(11) primary key auto_increment,
     year int(5),
     month int(5),
-    seal int(2) default 0
+    is_null int(2) default 0,
+    status int(2) default 0,
+    create_time Datetime,
+    modify_time DATETIME
 );
 
 create table gas_exchange(
@@ -29,3 +32,8 @@ create table guest(
     address varchar(255),
     phone varchar(100)
 );
+
+create table null_gas(
+    id int(11) primary key auto_increment,
+
+)
