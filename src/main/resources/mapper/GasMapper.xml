@@ -43,9 +43,95 @@
         select count(*) from gas
     </select>
 
-    <select id="selectWillCount" resultType="java.lang.Integer" parameterType="com.monster.redsun.entity.Gas">
-        select count(*) from gas where year <![CDATA[<]]> #{year} and month <![CDATA[<=]]> #{month} ;
+    <select id="selectColdCount" resultType="java.lang.Integer" parameterType="com.monster.redsun.entity.Gas">
+        select count(*) from gas where modify_time <![CDATA[<]]> #{modifyTime}
     </select>
 
+    <select id="selectCold" resultType="com.monster.redsun.entity.Gas" parameterType="com.monster.redsun.entity.Gas">
+        select * from gas where modify_time <![CDATA[<]]> #{modifyTime}
+    </select>
+
+    <select id="selectGasByFilterEq" resultType="com.monster.redsun.entity.Gas" parameterType="com.monster.redsun.entity.Gas">
+        select * from gas where true
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+        <if test="year != null and year != ''">
+            and year = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            and month = #{month}
+        </if>
+        <if test="isNull != null">
+            and is_null = #{isNull}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            and create_time =#{createTime}
+        </if>
+        <if test="modifyTime != null and modifyTime != ''">
+            and modify_time =#{modifyTime}
+        </if>
+    </select>
+
+    <select id="selectOverGas" resultType="com.monster.redsun.entity.Gas" parameterType="com.monster.redsun.entity.Gas">
+        select * from gas where true
+        <if test="isNull != null">
+            and is_null = #{isNull}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        and year <![CDATA[<]]> #{year}
+        union
+        select * from gas where true
+        <if test="isNull != null">
+            and is_null = #{isNull}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        and year = #{year} and month <![CDATA[<]]> #{month}
+    </select>
+
+    <select id="selectOverCount" resultType="java.lang.Integer" parameterType="com.monster.redsun.entity.Gas">
+        select * from gas where year <![CDATA[<=]]> #{year} and month <![CDATA[<]]> #{month}
+    </select>
+
+
+    <select id="selectWillCount" resultType="java.lang.Integer" parameterType="com.monster.redsun.entity.Gas">
+        select count(*) from gas where true
+        <if test="isNull != null">
+            and is_null = #{isNull}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        and year <![CDATA[=]]> #{year} and  #{month} <![CDATA[<=]]>  month  <![CDATA[<=]]> (#{month} + 3)
+    </select>
+
+    <select id="selectWillGas" resultType="com.monster.redsun.entity.Gas" parameterType="com.monster.redsun.entity.Gas">
+        select * from gas where true
+        <if test="isNull != null">
+            and is_null = #{isNull}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        and year <![CDATA[=]]> #{year} and  #{month} <![CDATA[<=]]>  month  <![CDATA[<=]]> (#{month} + 3)
+    </select>
+
+    <select id="selectCurrentYearNotOver" resultType="com.monster.redsun.entity.Gas">
+        select * from gas where true
+        <if test="isNull != null">
+            and is_null = #{isNull}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        and year = #{year} and month >= #{month}
+    </select>
 
 </mapper>

@@ -25,6 +25,12 @@ public interface GasService  {
 
     Boolean updateGas(Gas gas);
 
+    ArrayList<Gas> selectGasByFilterEq(Gas gas);
+
+    ArrayList<Gas> selectOverGas(Gas gas);
+
+    ArrayList<Gas> selectCurrentYearNotOver(Gas gas);
+
     String consoleName();
 
 }

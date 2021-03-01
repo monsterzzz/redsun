@@ -19,7 +19,7 @@ public class Gas {
   private String modifyTime;
   private String createTime;
 
-  public void gasIdGenerater() {
+  public void gasIdGenerator() {
     this.setGasId(String.format("LD%04d%02d%06d", this.year,this.month,this.id));
   }
 }

@@ -10,4 +10,6 @@ public class GasQueryVo extends Gas {
 
     String gasId;
 
+
+
 }

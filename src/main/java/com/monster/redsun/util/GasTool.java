@@ -11,7 +11,7 @@ public class GasTool {
     public static void updateMap(Gas gas, Map<String, Object> map){
 
         Calendar calendar = Calendar.getInstance();
-        if(gas.getYear() >= calendar.get(Calendar.YEAR) && gas.getMonth() >= calendar.get(Calendar.MONTH)){
+        if(gas.getYear() >= calendar.get(Calendar.YEAR) && gas.getMonth() >= calendar.get(Calendar.MONTH) + 1){
             int currentNum = (int)map.get(gas.getYear().toString());
             map.put(String.valueOf(gas.getYear()),currentNum+1);
         }else{

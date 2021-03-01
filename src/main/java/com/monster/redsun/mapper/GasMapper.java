@@ -22,13 +22,19 @@ public interface GasMapper {
 
     Integer selectWillCount();
 
-    Integer selectColdCount();
+    ArrayList<Gas> selectWillGas(Gas gas);
 
-    ArrayList<Gas> selectWill();
+    Integer selectOverCount(Gas gas);
+
+    ArrayList<Gas> selectOverGas(Gas gas);
+
+    Integer selectColdCount();
 
     ArrayList<Gas> selectCold();
 
-    ArrayList<Gas> selectGasByYear();
+    ArrayList<Gas> selectGasByFilterEq(Gas gas);
+
+    ArrayList<Gas> selectCurrentYearNotOver(Gas gas);
 
     Integer deleteOneById(Long id);
 

@@ -71,6 +71,7 @@ public class GasController {
             if(gas.getStatus() == 1){
                 GasTool.updateMap(gas,map3);
             }else{
+                System.out.println(gas);
                 if(gas.getIsNull() == 0){
                     GasTool.updateMap(gas,map1);
                 }else{
@@ -86,7 +87,56 @@ public class GasController {
         return  response;
     }
 
+    @GetMapping("/filter")
+    @ResponseBody
+    public BaseResponse gasFilter(@RequestParam Map<String, Object> params){
+        BaseResponse baseResponse = new BaseResponse();
+        ArrayList<Gas> data;
 
+        Gas gas = new Gas();
+        int status = Integer.parseInt((String)params.get("status"));
+        switch(status){
+            case 0:
+                gas.setStatus(0);
+                gas.setIsNull(0);
+                break;
+            case 1:
+                gas.setStatus(0);
+                gas.setIsNull(1);
+                break;
+            case 2:
+                gas.setStatus(1);
+                break;
+        }
+
+        int year = Integer.parseInt((String) params.get("year"));
+        Calendar calendar = Calendar.getInstance();
+        if(year == 13){
+            gas.setYear(calendar.get(Calendar.YEAR));
+            gas.setMonth(calendar.get(Calendar.MONTH) + 1);
+            System.out.println(gas);
+            System.out.println("11");
+            data = gasService.selectOverGas(gas);
+        }else{
+            gas.setYear(year);
+            if(year == 2021){
+                gas.setMonth(calendar.get(Calendar.MONTH) + 1);
+                data = gasService.selectCurrentYearNotOver(gas);
+            }else {
+                data = gasService.selectGasByFilterEq(gas);
+            }
+
+            System.out.println(gas);
+            System.out.println("22");
+
+        }
+        for(Gas tmp: data){
+            tmp.gasIdGenerator();
+        }
+       // System.out.println(data);
+        baseResponse.setData(data);
+        return baseResponse;
+    }
 
     @GetMapping("/page/{pageNumber}")
     @ResponseBody
@@ -97,7 +147,7 @@ public class GasController {
             ArrayList<Gas> gases = gasService.selectAll();
 
             for(Gas gas : gases){
-                gas.gasIdGenerater();
+                gas.gasIdGenerator();
             }
 
             baseResponse.setData(gases);

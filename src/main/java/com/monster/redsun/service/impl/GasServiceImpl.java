@@ -5,14 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.monster.redsun.entity.Gas;
 import com.monster.redsun.mapper.GasMapper;
 import com.monster.redsun.service.GasService;
-import com.monster.redsun.vo.GasQueryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class GasServiceImpl implements GasService {
@@ -51,7 +47,7 @@ public class GasServiceImpl implements GasService {
     public ArrayList<Gas> selectAllNullGas() {
         ArrayList<Gas> gases = gasMapper.selectAllNullGas();
         for(Gas gas :gases ){
-            gas.gasIdGenerater();
+            gas.gasIdGenerator();
 
         }
         return gases;
@@ -65,6 +61,21 @@ public class GasServiceImpl implements GasService {
     @Override
     public Boolean updateGas(Gas gas) {
         return gasMapper.updateGas(gas) == 0;
+    }
+
+    @Override
+    public ArrayList<Gas> selectGasByFilterEq(Gas gas) {
+        return gasMapper.selectGasByFilterEq(gas);
+    }
+
+    @Override
+    public ArrayList<Gas> selectOverGas(Gas gas) {
+        return gasMapper.selectOverGas(gas);
+    }
+
+    @Override
+    public ArrayList<Gas> selectCurrentYearNotOver(Gas gas) {
+        return gasMapper.selectCurrentYearNotOver(gas);
     }
 
     @Override
