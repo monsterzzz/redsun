@@ -6,6 +6,7 @@ import com.monster.redsun.DTO.Gas.GasNewDTO;
 import com.monster.redsun.entity.Gas;
 import com.monster.redsun.service.GasService;
 import com.monster.redsun.util.GasTool;
+import com.monster.redsun.util.Status;
 import com.monster.redsun.vo.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -91,45 +92,60 @@ public class GasController {
     @ResponseBody
     public BaseResponse gasFilter(@RequestParam Map<String, Object> params){
         BaseResponse baseResponse = new BaseResponse();
-        ArrayList<Gas> data;
+        ArrayList<Gas> data = new ArrayList<>();
 
         Gas gas = new Gas();
-        int status = Integer.parseInt((String)params.get("status"));
-        switch(status){
-            case 0:
-                gas.setStatus(0);
-                gas.setIsNull(0);
-                break;
-            case 1:
-                gas.setStatus(0);
-                gas.setIsNull(1);
-                break;
-            case 2:
-                gas.setStatus(1);
-                break;
+
+        if(params.get("status") == null && params.get("year") == null){
+            data = gasService.selectGasByFilterEq(gas);
         }
 
-        int year = Integer.parseInt((String) params.get("year"));
-        Calendar calendar = Calendar.getInstance();
-        if(year == 13){
-            gas.setYear(calendar.get(Calendar.YEAR));
-            gas.setMonth(calendar.get(Calendar.MONTH) + 1);
-            System.out.println(gas);
-            System.out.println("11");
-            data = gasService.selectOverGas(gas);
-        }else{
-            gas.setYear(year);
-            if(year == 2021){
-                gas.setMonth(calendar.get(Calendar.MONTH) + 1);
-                data = gasService.selectCurrentYearNotOver(gas);
-            }else {
-                data = gasService.selectGasByFilterEq(gas);
+        Object sts = params.get("status");
+        if(sts != null){
+            int status = Integer.parseInt((String)params.get("status"));
+            switch(status){
+                case 0:
+                    gas.setStatus(0);
+                    gas.setIsNull(0);
+                    break;
+                case 1:
+                    gas.setStatus(0);
+                    gas.setIsNull(1);
+                    break;
+                case 2:
+                    gas.setStatus(1);
+                    break;
             }
-
-            System.out.println(gas);
-            System.out.println("22");
-
         }
+
+        Object y = params.get("year");
+
+        if(y != null){
+            int year = Integer.parseInt((String) params.get("year"));
+            Calendar calendar = Calendar.getInstance();
+            if(year == 13){
+                gas.setYear(calendar.get(Calendar.YEAR));
+                gas.setMonth(calendar.get(Calendar.MONTH) + 1);
+                System.out.println(gas);
+                System.out.println("11");
+                System.out.println(Status.InRepo);
+                data = gasService.selectOverGas(gas);
+            }else{
+                gas.setYear(year);
+                if(year == 2021){
+                    gas.setMonth(calendar.get(Calendar.MONTH) + 1);
+                    data = gasService.selectCurrentYearNotOver(gas);
+                }else {
+                    data = gasService.selectGasByFilterEq(gas);
+                }
+
+                System.out.println(gas);
+                System.out.println("22");
+
+            }
+        }
+
+
         for(Gas tmp: data){
             tmp.gasIdGenerator();
         }
